@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:greengrocer/src/pages/cart/cart_tab.dart';
 import 'package:greengrocer/src/pages/home/home_tab.dart';
+import 'package:greengrocer/src/pages/orders/orders_tab.dart';
 import 'package:greengrocer/src/pages/profile/profile_tab.dart';
 
 class BaseScreen extends StatefulWidget {
@@ -19,17 +20,11 @@ class _BaseScreenState extends State<BaseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: PageView(
         /// Travando para não alterar entre as telas, com o mouse
         physics: const NeverScrollableScrollPhysics(),
         controller: pageControllerrr,
-        children: [
-          const HomeTab(),
-          const CartTab(),
-          Container(color: Colors.blue),
-          const ProfileTab(),
-        ],
+        children: const [HomeTab(), CartTab(), OrdersTab(), ProfileTab()],
       ),
 
       bottomNavigationBar: BottomNavigationBar(

@@ -40,12 +40,14 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+
+    defaultConfig {
+        applicationId = "com.example.greengrocer"
+    }
 }
 
 flutter {
     source = "../.."
 }
 
-defaultConfig {
-    applicationId "greengrocer"
-}
+    
