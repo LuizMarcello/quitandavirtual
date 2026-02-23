@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "850002986710",
+    "project_id": "quitandavirtual",
+    "storage_bucket": "quitandavirtual.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:850002986710:android:40c94146cd819ef8286b77",
+        "android_client_info": {
+          "package_name": "com.example.greengrocer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWFR4-1xaI453VQO31kTMtuO_RvJLY8W8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
