@@ -68,9 +68,9 @@ final List<String> categoriesss = [
 ];
 
 List<CartItemModel> cartItems = [
-  CartItemModel(item: apple, quantity: 1),
-  CartItemModel(item: mango, quantity: 1),
-  CartItemModel(item: guava, quantity: 3),
+  CartItemModel(itttem: apple, quantity: 1),
+  CartItemModel(itttem: mango, quantity: 1),
+  CartItemModel(itttem: guava, quantity: 3),
 ];
 
 UserModel user = UserModel(
@@ -82,7 +82,7 @@ UserModel user = UserModel(
 );
 
 List<OrderModel> orders = [
-  // Lista com apenas 1 pedido
+  // Pedido 01 com 2 itens
   OrderModel(
     id: 'kdjlskdj89d8',
     status: 'pending_payment',
@@ -90,6 +90,22 @@ List<OrderModel> orders = [
     createdDateTime: DateTime.parse('2021-06-08 10:00:10.458'),
     overdueDateTime: DateTime.parse('2021-06-08 11:00:10.458'),
     total: 11.0,
-    items: [CartItemModel(item: apple, quantity: 2)],
+    itemsss: [
+      CartItemModel(itttem: apple, quantity: 2),
+      CartItemModel(itttem: mango, quantity: 3),
+    ],
+  ),
+
+  // Pedido 02 com 1 item
+  OrderModel(
+    id: '4lk4l4l4jj',
+    status: 'pending_payment',
+    copyAndPaste: '4lk4l4l4jj',
+    createdDateTime: DateTime.parse('2021-06-08 10:00:10.458'),
+    overdueDateTime: DateTime.parse('2021-06-08 11:00:10.458'),
+    total: 11.0,
+    itemsss: [
+      CartItemModel(itttem: apple, quantity: 2),
+    ],
   ),
 ];

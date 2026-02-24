@@ -7,7 +7,7 @@ class OrderModel {
   DateTime createdDateTime;
   DateTime overdueDateTime;
   double total;
-  List<CartItemModel> items;
+  List<CartItemModel> itemsss;
 
   OrderModel({
     required this.id,
@@ -16,6 +16,6 @@ class OrderModel {
     required this.createdDateTime,
     required this.overdueDateTime,
     required this.total,
-    required this.items,
+    required this.itemsss,
   });
 }

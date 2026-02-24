@@ -31,14 +31,14 @@ class _CartTileState extends State<CartTile> {
       child: ListTile(
         // imagem
         leading: Image.asset(
-          widget.cartItemmm.item.imgUrl,
+          widget.cartItemmm.itttem.imgUrl,
           height: 60,
           width: 60,
         ),
 
         // titulo
         title: Text(
-          widget.cartItemmm.item.itemName,
+          widget.cartItemmm.itttem.itemName,
           style: const TextStyle(fontWeight: FontWeight.w500),
         ),
 
@@ -54,7 +54,7 @@ class _CartTileState extends State<CartTile> {
         // Botão quantidade
         trailing: QuantityWidget(
           valuuue: widget.cartItemmm.quantity,
-          suffixTexxxt: widget.cartItemmm.item.unit,
+          suffixTexxxt: widget.cartItemmm.itttem.unit,
           resulttt: (quantity) {
             setState(() {
               widget.cartItemmm.quantity = quantity;
