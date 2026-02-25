@@ -66,6 +66,7 @@ class OrderTile extends StatelessWidget {
                     // Este é o componente "order_status_widget"
                     // Ele vai ser usado neste segundo Expanded()
                     child: OrderStatusWidget(
+                      // statuuus: orderrr.status,
                       statuuus: orderrr.status,
                       // isOverduuue é um boleano. Vai ser comparado se
                       // overdueDateTime está antes ou depois da hora atual

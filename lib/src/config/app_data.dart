@@ -99,7 +99,8 @@ List<OrderModel> orders = [
   // Pedido 02 com 1 item
   OrderModel(
     id: '4lk4l4l4jj',
-    status: 'pending_payment',
+    // status: 'pending_payment',
+    status: 'refunded',
     copyAndPaste: '4lk4l4l4jj',
     createdDateTime: DateTime.parse('2021-06-08 10:00:10.458'),
     overdueDateTime: DateTime.parse('2021-06-08 11:00:10.458'),
