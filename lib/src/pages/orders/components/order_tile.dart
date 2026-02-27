@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:greengrocer/src/models/cart_item_model.dart';
 import 'package:greengrocer/src/models/order_model.dart';
+import 'package:greengrocer/src/pages/commom_widgets/payment_dialog.dart';
 import 'package:greengrocer/src/pages/orders/components/order_status_widget.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
 
@@ -18,6 +19,9 @@ class OrderTile extends StatelessWidget {
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
+          // Se vai começar expandido(aberto) ou não
+          initiallyExpanded: orderrr.status == 'pending_payment',
+
           title: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,23 +37,26 @@ class OrderTile extends StatelessWidget {
             ],
           ),
           childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+          expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(
-              height: 150,
+            IntrinsicHeight(
               child: Row(
                 children: [
                   // Lista de produtos do pedido
                   Expanded(
                     flex: 3,
-                    child: ListView(
-                      // Este "toList()" no final, é para que
-                      // este ListView() retorne uma lista.
-                      children: orderrr.itemsss.map((orderIteeem) {
-                        return _OrderItemWidget(
-                          utilsServices: utilsServiceees,
-                          orderIteeem: orderIteeem,
-                        );
-                      }).toList(),
+                    child: SizedBox(
+                      height: 150,
+                      child: ListView(
+                        // Este "toList()" no final, é para que
+                        // este ListView() retorne uma lista.
+                        children: orderrr.itemsss.map((orderIteeem) {
+                          return _OrderItemWidget(
+                            utilsServices: utilsServiceees,
+                            orderIteeem: orderIteeem,
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
 
@@ -78,6 +85,48 @@ class OrderTile extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+            ),
+
+            // Total
+            Text.rich(
+              TextSpan(
+                style: const TextStyle(fontSize: 19),
+                children: [
+                  TextSpan(
+                    text: 'Total ',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text: utilsServiceees.priceToCurrency(orderrr.total),
+                  ),
+                ],
+              ),
+            ),
+
+            // Botão pagamento
+            Visibility(
+              visible: orderrr.status == 'pending_payment',
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) {
+                      return PaymentDialog(orddder: orderrr);
+                    },
+                  );
+                },
+                icon: const Icon(Icons.pix, color: Colors.white), // <=== AQUI
+                label: const Text(
+                  'Ver QR Code Pix',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ),
           ],

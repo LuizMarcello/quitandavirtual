@@ -86,9 +86,10 @@ List<OrderModel> orders = [
   OrderModel(
     id: 'kdjlskdj89d8',
     status: 'pending_payment',
+    // status: 'preparing_purchase',
     copyAndPaste: 's9dsd9sd9s9d',
-    createdDateTime: DateTime.parse('2021-06-08 10:00:10.458'),
-    overdueDateTime: DateTime.parse('2021-06-08 11:00:10.458'),
+    createdDateTime: DateTime.parse('2026-06-08 10:00:10.458'),
+    overdueDateTime: DateTime.parse('2026-06-08 11:00:10.458'),
     total: 11.0,
     itemsss: [
       CartItemModel(itttem: apple, quantity: 2),
@@ -100,10 +101,11 @@ List<OrderModel> orders = [
   OrderModel(
     id: '4lk4l4l4jj',
     // status: 'pending_payment',
-    status: 'refunded',
+    status: 'delivered',
+    // status: 'refunded',
     copyAndPaste: '4lk4l4l4jj',
-    createdDateTime: DateTime.parse('2021-06-08 10:00:10.458'),
-    overdueDateTime: DateTime.parse('2021-06-08 11:00:10.458'),
+    createdDateTime: DateTime.parse('2026-06-08 10:00:10.458'),
+    overdueDateTime: DateTime.parse('2026-06-08 11:00:10.458'),
     total: 11.0,
     itemsss: [
       CartItemModel(itttem: apple, quantity: 2),

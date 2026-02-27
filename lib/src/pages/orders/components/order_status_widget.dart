@@ -32,6 +32,7 @@ class OrderStatusWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Sem condicional, vai aparecer sempre
         const _StatusDot(isActivvve: true, titllle: 'Pedido confirmado'),
         const _CustomDivider(),
         // Spread Operator(...): Desempacota uma lista
@@ -51,6 +52,14 @@ class OrderStatusWidget extends StatelessWidget {
             titllle: 'Pagamento do Pix vencido',
             backgroundColor: Colors.red,
           ),
+        ] else ...[
+          _StatusDot(isActivvve: currentStatus >= 2, titllle: 'Pagamento'),
+          const _CustomDivider(),
+          _StatusDot(isActivvve: currentStatus >= 3, titllle: 'Preparando'),
+          const _CustomDivider(),
+          _StatusDot(isActivvve: currentStatus >= 4, titllle: 'Envio'),
+          const _CustomDivider(),
+          _StatusDot(isActivvve: currentStatus == 5, titllle: 'Entregue'),
         ],
       ],
     );
