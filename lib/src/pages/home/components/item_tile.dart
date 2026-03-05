@@ -5,10 +5,17 @@ import 'package:greengrocer/src/pages/product/product_screen.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
 
 class ItemTile extends StatelessWidget {
-  ItemTile({super.key, required this.itemmm});
-
   //Recebendo todos os dados dos produtos
   final ItemModel itemmm;
+  final void Function(GlobalKey) cartAnimationMethod;
+  final GlobalKey imageGk = GlobalKey();
+
+  ItemTile({
+    super.key,
+    required this.itemmm,
+    // required void Function(GlobalKey<State<StatefulWidget>> gkImage)
+    required this.cartAnimationMethod,
+  });
 
   final UtilsServices utilsServices = UtilsServices();
 
@@ -42,7 +49,7 @@ class ItemTile extends StatelessWidget {
                   Expanded(
                     child: Hero(
                       tag: itemmm.imgUrl,
-                      child: Image.asset(itemmm.imgUrl),
+                      child: Image.asset(itemmm.imgUrl, key: imageGk),
                     ),
                   ),
                   // Nome
@@ -85,7 +92,9 @@ class ItemTile extends StatelessWidget {
           top: 4,
           right: 4,
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              cartAnimationMethod(imageGk);
+            },
             child: Container(
               height: 40,
               width: 35,
