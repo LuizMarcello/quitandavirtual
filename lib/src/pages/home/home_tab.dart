@@ -4,9 +4,10 @@ import 'package:add_to_cart_animation/add_to_cart_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:greengrocer/src/config/app_data.dart' as app_data;
 import 'package:greengrocer/src/config/custom_colors.dart';
+import 'package:greengrocer/src/pages/commom_widgets/app_name_widget.dart';
 import 'package:greengrocer/src/pages/home/components/category_tile.dart';
 import 'package:greengrocer/src/pages/home/components/item_tile.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
 
 class HomeTab extends StatefulWidget {
@@ -37,21 +38,7 @@ class _HomeTabState extends State<HomeTab> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: Text.rich(
-          TextSpan(
-            style: const TextStyle(fontSize: 30),
-            children: [
-              TextSpan(
-                text: "Quitanda",
-                style: TextStyle(color: CustomColors.customSwatchColor),
-              ),
-              TextSpan(
-                text: "Virtual",
-                style: TextStyle(color: CustomColors.customContrastColor),
-              ),
-            ],
-          ),
-        ),
+        title: const AppNameWidget(),
 
         actions: [
           Padding(
@@ -172,3 +159,5 @@ class _HomeTabState extends State<HomeTab> {
     );
   }
 }
+
+

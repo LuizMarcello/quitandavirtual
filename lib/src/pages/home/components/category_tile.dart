@@ -16,12 +16,13 @@ class CategoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     /// Faz que algo(talvez um ícone) seja clicável
-    return GestureDetector(
-      onTap: onPresseddd,
-      child: Align(
-        alignment: Alignment.center,
+    return Align(
+      alignment: Alignment.center,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(30.0),
+        onTap: onPresseddd,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: isSelecteddd
