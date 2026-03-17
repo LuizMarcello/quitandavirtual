@@ -9,22 +9,26 @@ class AppNameWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text.rich(
-      TextSpan(
-        style: TextStyle(fontSize: textSize),
-        children: [
+    return Column(
+      children: [
+        Text.rich(
           TextSpan(
-            text: "Quitanda",
-            style: TextStyle(
-              color: greenTitleColor ?? CustomColors.customSwatchColor,
-            ),
+            style: TextStyle(fontSize: textSize),
+            children: [
+              TextSpan(
+                text: "Quitanda",
+                style: TextStyle(
+                  color: greenTitleColor ?? CustomColors.customSwatchColor,
+                ),
+              ),
+              TextSpan(
+                text: "Virtual",
+                style: TextStyle(color: CustomColors.customContrastColor),
+              ),
+            ],
           ),
-          TextSpan(
-            text: "Virtual",
-            style: TextStyle(color: CustomColors.customContrastColor),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

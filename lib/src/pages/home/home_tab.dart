@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:greengrocer/src/config/app_data.dart' as app_data;
 import 'package:greengrocer/src/config/custom_colors.dart';
 import 'package:greengrocer/src/pages/commom_widgets/app_name_widget.dart';
+import 'package:greengrocer/src/pages/commom_widgets/custom_shimmer.dart';
 import 'package:greengrocer/src/pages/home/components/category_tile.dart';
 import 'package:greengrocer/src/pages/home/components/item_tile.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
@@ -26,6 +27,21 @@ class _HomeTabState extends State<HomeTab> {
 
   void itemSelectedCartAnimations(GlobalKey gkImage) {
     runAddToCardAnimation(gkImage);
+  }
+
+  bool isLoading = true;
+
+  // Quando o aplicativo inicia, o primeiro
+  // método que ele chama, é o initState():
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 5), () {
+      // setState(): Fazendo uma mudança no "estado" da aplicação
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 
   final UtilsServices utilsServices = UtilsServices();
@@ -113,45 +129,81 @@ class _HomeTabState extends State<HomeTab> {
             Container(
               padding: const EdgeInsets.only(left: 25),
               height: 40,
-              child: ListView.separated(
-                /// Direção da rolagem
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (_, index) {
-                  return CategoryTile(
-                    onPresseddd: () {
-                      setState(() {
-                        selectedCategory = app_data.categoriesss[index];
-                      });
-                    },
-                    categoryyy: app_data.categoriesss[index],
-                    isSelecteddd:
-                        app_data.categoriesss[index] == selectedCategory,
-                  );
-                },
-                separatorBuilder: (_, index) => const SizedBox(width: 10),
-                itemCount: app_data.categoriesss.length,
-              ),
+              child: !isLoading
+                  ? ListView.separated(
+                      /// Direção da rolagem
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (_, index) {
+                        return CategoryTile(
+                          onPresseddd: () {
+                            setState(() {
+                              selectedCategory = app_data.categoriesss[index];
+                            });
+                          },
+                          categoryyy: app_data.categoriesss[index],
+                          isSelecteddd:
+                              app_data.categoriesss[index] == selectedCategory,
+                        );
+                      },
+                      separatorBuilder: (_, index) => const SizedBox(width: 10),
+                      itemCount: app_data.categoriesss.length,
+                    )
+                  : ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: List.generate(
+                        10,
+                        (index) => Container(
+                          alignment: Alignment.center,
+                          margin: const EdgeInsets.only(right: 12),
+                          child: CustomShimmer(
+                            height: 20,
+                            width: 80,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                      ),
+                    ),
             ),
 
             /// Grid
             Expanded(
-              child: GridView.builder(
-                padding: const EdgeInsets.fromLTRB(15, 0, 16, 16),
-                physics: const BouncingScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 9 / 11.5,
-                ),
-                itemCount: app_data.items.length,
-                itemBuilder: (_, index) {
-                  return ItemTile(
-                    itemmm: app_data.items[index],
-                    cartAnimationMethod: itemSelectedCartAnimations,
-                  );
-                },
-              ),
+              child: !isLoading
+                  ? GridView.builder(
+                      padding: const EdgeInsets.fromLTRB(15, 0, 16, 16),
+                      physics: const BouncingScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                            childAspectRatio: 9 / 11.5,
+                          ),
+                      itemCount: app_data.items.length,
+                      itemBuilder: (_, index) {
+                        return ItemTile(
+                          itemmm: app_data.items[index],
+                          cartAnimationMethod: itemSelectedCartAnimations,
+                        );
+                      },
+                    )
+                  : GridView.count(
+                      padding: const EdgeInsets.fromLTRB(15, 0, 16, 16),
+                      physics: const BouncingScrollPhysics(),
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      childAspectRatio: 9 / 11.5,
+                      // Para "gerar" uma lista, que serão
+                      // os "shimmers" customizados:
+                      children: List.generate(
+                        10,
+                        (index) => CustomShimmer(
+                          height: double.infinity,
+                          width: double.infinity,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                    ),
             ),
           ],
         ),
@@ -159,5 +211,3 @@ class _HomeTabState extends State<HomeTab> {
     );
   }
 }
-
-

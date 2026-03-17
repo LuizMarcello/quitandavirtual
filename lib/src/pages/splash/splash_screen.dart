@@ -47,6 +47,17 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             const AppNameWidget(greenTitleColor: Colors.white, textSize: 40),
             SizedBox(height: 15),
+            Text.rich(
+              const TextSpan(
+                text: "By Luiz Marcello",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0,
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
             CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation(Colors.white),
             ),
