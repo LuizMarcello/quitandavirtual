@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
-import 'package:greengrocer/src/pages/auth/sign_in_screen.dart';
+// import 'package:greengrocer/src/pages/auth/sign_in_screen.dart';
 import 'package:greengrocer/src/pages/commom_widgets/app_name_widget.dart';
+import 'package:greengrocer/src/pages_routes/app_pages.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,13 +20,19 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Future.delayed(const Duration(seconds: 5), () {
       // ignore: use_build_context_synchronously
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (c) {
-            return const SignInScreen();
-          },
-        ),
-      );
+      // Navigator.of(context).pushReplacement(
+      //   MaterialPageRoute(
+      //     builder: (c) {
+      //       return const SignInScreen();
+      //     },
+      //   ),
+      // );
+
+      // Usando o Get(GetX)
+      // Get.offNamed: Remove a tela atual e navega para outra,
+      // a tela atual é destruída, NÃO dá para voltar,
+      // equivalente ao Navigator.pushReplacement
+      Get.offNamed(PagesRoutes.signInRoute);
     });
   }
 

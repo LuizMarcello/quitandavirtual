@@ -1,13 +1,21 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:greengrocer/src/config/custom_colors.dart';
+import 'package:greengrocer/src/pages/auth/controller/auth_controller.dart';
 import 'package:greengrocer/src/pages/commom_widgets/app_name_widget.dart';
 import 'package:greengrocer/src/pages/commom_widgets/custom_text_field.dart';
-import 'package:greengrocer/src/pages/auth/sign_up_screen.dart';
-import 'package:greengrocer/src/base/base_screen.dart';
-import 'package:greengrocer/src/config/custom_colors.dart';
+import 'package:greengrocer/src/pages_routes/app_pages.dart';
 
 class SignInScreen extends StatelessWidget {
-  const SignInScreen({super.key});
+  SignInScreen({super.key});
+
+// Criando um controlador para o widget Form() da linha 80
+  final _formKey = GlobalKey<FormState>();
+
+  // Controllers para os campos "email" e "senha"
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -74,112 +82,196 @@ class SignInScreen extends StatelessWidget {
                   color: Colors.white,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(45)),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    /// Email
-                    const CustomTextField(iconn: Icons.email, labell: 'Email'),
-
-                    /// Senha
-                    const CustomTextField(
-                      iconn: Icons.lock,
-                      labell: 'Senha',
-                      isSecrett: true,
-                    ),
-
-                    /// Botão de entrar
-                    SizedBox(
-                      height: 50,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green, // seta a cor verde
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ),
-                        ),
-                        onPressed: () {
-                          /// pushReplacement()
-                          /// Tira a tela atual da pilha, e troca por esta
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return const BaseScreen();
-                              },
-                            ),
-                          );
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      /// Email
+                      CustomTextField(
+                        controooller: emailController,
+                        iconn: Icons.email,
+                        labell: 'Email',
+                        validaaator: (email) {
+                          if (email == null || email.isEmpty) {
+                            return 'Digite seu email!';
+                          }
+                          // Usando expressão regular ".isEmail" do GetX.
+                          if (!email.isEmail) {
+                            return 'Digite um email válido';
+                          }
+                          return null;
                         },
-                        child: Text(
-                          'Entrar',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
                       ),
-                    ),
 
-                    /// Botão Esqueceu a senha
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Esqueceu a senha?',
-                          style: TextStyle(
-                            color: CustomColors.customContrastColor,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    /// Divisor
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Divider(
-                              color: Colors.grey.withAlpha(90),
-                              thickness: 2,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            child: Text('Ou'),
-                          ),
-                          Expanded(
-                            child: Divider(
-                              color: Colors.grey.withAlpha(90),
-                              thickness: 2,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    /// Botão criar conta. Somente bordas
-                    SizedBox(
-                      height: 50,
-                      child: OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          side: const BorderSide(width: 2, color: Colors.green),
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return SignUpScreen();
-                              },
-                            ),
-                          );
+                      /// Senha
+                      CustomTextField(
+                        controooller: passwordController,
+                        iconn: Icons.lock,
+                        labell: 'Senha',
+                        isSecrett: true,
+                        validaaator: (password) {
+                          if (password == null || password.isEmpty) {
+                            return 'Digite sua senha!';
+                          }
+                          if (password.length < 8) {
+                            return 'Digite uma senha com mínimo de 8 caracteres!';
+                          }
+                          return null;
                         },
-                        child: Text(
-                          'Criar conta',
-                          style: TextStyle(fontSize: 18, color: Colors.green),
+                      ),
+
+                      /// Botão de entrar
+                      SizedBox(
+                          height: 50,
+                          child: GetX<AuthController>(
+                            // init: AuthController(),
+                            // initState: (_) {},
+                            // Este "authController" é do tipo "AuthController",
+                            // que é uma classe controladora do GetX
+                            builder: (authController) {
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Colors.green, // seta a cor verde
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                  ),
+                                ),
+                                onPressed:
+                                    // Passando nulo para um "onPressed" de um
+                                    // elevatedButton faz com que ele fique desativado
+                                    authController.isLoooading.value
+                                        ? null
+                                        : () {
+                                            // Para fechar o teclado após digitar
+                                            // Tira o foco de todos os campos de texto
+                                            FocusScope.of(context).unfocus();
+
+                                            /// pushReplacement()
+                                            /// Tira a tela atual da pilha, e troca por esta
+                                            // Navigator.of(context).pushReplacement(
+                                            //   MaterialPageRoute(
+                                            //     builder: (context) {
+                                            //       return const BaseScreen();
+                                            //     },
+                                            //   ),
+                                            // );
+
+                                            // Usando o Get(GetX) para fazer a mesma coisa
+                                            // Get.offNamed: Remove a tela atual e navega para outra,
+                                            // a tela atual é destruída, NÃO dá para voltar,
+                                            // equivalente ao Navigator.pushReplacement
+                                            /// Get.offNamed(PagesRoutes.baseRoute);
+
+                                            // O currentState é nullable, com este
+                                            // "!" no final, ele não é mais nullable
+                                            // Esta condicional retorna true se todos
+                                            // os campos digitados no formulário
+                                            // estiverem válidos.
+                                            if (_formKey.currentState!
+                                                .validate()) {
+                                              String emaiiil =
+                                                  emailController.text;
+                                              String passwooord =
+                                                  passwordController.text;
+
+                                              authController.signIn(
+                                                  email: emaiiil,
+                                                  password: passwooord);
+                                            } else {
+                                              // ignore: avoid_print
+                                              print('Campos não válidos');
+                                            }
+                                          },
+                                // Fazendo uma verificação ternária
+                                // Variável observável "isLoooading"
+                                child: authController.isLoooading.value
+                                    ? CircularProgressIndicator()
+                                    : const Text(
+                                        'Entrar',
+                                        style: TextStyle(
+                                            fontSize: 18, color: Colors.white),
+                                      ),
+                              );
+                            },
+                          )),
+
+                      /// Botão Esqueceu a senha
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            'Esqueceu a senha?',
+                            style: TextStyle(
+                              color: CustomColors.customContrastColor,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+
+                      /// Divisor
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Divider(
+                                color: Colors.grey.withAlpha(90),
+                                thickness: 2,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              child: Text('Ou'),
+                            ),
+                            Expanded(
+                              child: Divider(
+                                color: Colors.grey.withAlpha(90),
+                                thickness: 2,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      /// Botão criar conta. Somente bordas
+                      SizedBox(
+                        height: 50,
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                            side:
+                                const BorderSide(width: 2, color: Colors.green),
+                          ),
+                          onPressed: () {
+                            // Navigator.of(context).push(
+                            //   MaterialPageRoute(
+                            //     builder: (context) {
+                            //       return SignUpScreen();
+                            //     },
+                            //   ),
+                            // );
+
+                            // Usando o Get(GetX) para fazer a mesma coisa
+                            // Get.toNamed: Empilha uma nova página,
+                            // mantém a tela atual na pilha,
+                            // permite voltar com Get.back(),
+                            // Equivalente ao Navigator.push
+                            Get.toNamed(PagesRoutes.signUpRoute);
+                          },
+                          child: Text(
+                            'Criar conta',
+                            style: TextStyle(fontSize: 18, color: Colors.green),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

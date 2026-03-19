@@ -8,16 +8,23 @@ class CustomTextField extends StatefulWidget {
   final List<TextInputFormatter>? inputFormattersss;
   final String? initialValuuue;
   final bool readOnlyyy;
+  // Função validaaator: Aceita nullable String
+  // como parâmetro e retorna nullable String,
+  // e ela mesmo também é nullable,
+  // não precisa validar todos os campos
+  final String? Function(String?)? validaaator;
+  final TextEditingController? controooller;
 
-  const CustomTextField({
-    super.key,
-    required this.iconn,
-    required this.labell,
-    this.inputFormattersss,
-    this.isSecrett = false,
-    this.initialValuuue,
-    this.readOnlyyy = false,
-  });
+  const CustomTextField(
+      {super.key,
+      required this.iconn,
+      required this.labell,
+      this.inputFormattersss,
+      this.isSecrett = false,
+      this.initialValuuue,
+      this.readOnlyyy = false,
+      this.validaaator,
+      this.controooller});
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -40,11 +47,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
       padding: const EdgeInsets.only(bottom: 15.0),
       ///////////////////////////////////////////////////////////////
       child: TextFormField(
+        controller: widget.controooller,
         readOnly: widget.readOnlyyy,
         initialValue: widget.initialValuuue,
-
         inputFormatters: widget.inputFormattersss,
         obscureText: isObscuree,
+        validator: widget.validaaator,
         decoration: InputDecoration(
           prefixIcon: Icon(widget.iconn),
 

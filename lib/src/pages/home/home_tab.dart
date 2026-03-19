@@ -1,7 +1,9 @@
 // import 'package:flutter/foundation.dart';
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:add_to_cart_animation/add_to_cart_icon.dart';
+// import 'package:add_to_cart_animation/add_to_cart_icon.dart';
 import 'package:flutter/material.dart';
+// import 'package:badges/badges.dart';
 import 'package:greengrocer/src/config/app_data.dart' as app_data;
 import 'package:greengrocer/src/config/custom_colors.dart';
 import 'package:greengrocer/src/pages/commom_widgets/app_name_widget.dart';
