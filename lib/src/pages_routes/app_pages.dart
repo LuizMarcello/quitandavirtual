@@ -1,7 +1,7 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:greengrocer/src/base/base_screen.dart';
-import 'package:greengrocer/src/pages/auth/sign_in_screen.dart';
-import 'package:greengrocer/src/pages/auth/sign_up_screen.dart';
+import 'package:greengrocer/src/pages/auth/view/sign_in_screen.dart';
+import 'package:greengrocer/src/pages/auth/view/sign_up_screen.dart';
 import 'package:greengrocer/src/pages/splash/splash_screen.dart';
 
 abstract class AppPages {
