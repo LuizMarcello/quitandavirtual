@@ -14,6 +14,10 @@ class CustomTextField extends StatefulWidget {
   // não precisa validar todos os campos
   final String? Function(String?)? validaaator;
   final TextEditingController? controooller;
+  // Atributo que ajusta o teclado que vai aparecer,
+  // conforme o campo selecionado, exemplo, campo
+  // email, já aparece com o arroba
+  final TextInputType? textInputTypppe;
 
   const CustomTextField(
       {super.key,
@@ -24,7 +28,8 @@ class CustomTextField extends StatefulWidget {
       this.initialValuuue,
       this.readOnlyyy = false,
       this.validaaator,
-      this.controooller});
+      this.controooller,
+      this.textInputTypppe});
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -53,6 +58,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
         inputFormatters: widget.inputFormattersss,
         obscureText: isObscuree,
         validator: widget.validaaator,
+        // Classe StatefulWidget, necessário
+        // acrescentar o widget
+        keyboardType: widget.textInputTypppe,
         decoration: InputDecoration(
           prefixIcon: Icon(widget.iconn),
 

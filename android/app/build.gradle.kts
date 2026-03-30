@@ -42,7 +42,8 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.greengrocer"
+        applicationId = "com.example.greengrocer";
+        minSdk = flutter.minSdkVersion
     }
 }
 

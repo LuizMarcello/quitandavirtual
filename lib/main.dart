@@ -8,6 +8,9 @@ import 'package:greengrocer/src/pages_routes/app_pages.dart';
 import 'firebase_options.dart';
 
 void main() async {
+// Código interno do flutter para ter certeza que tudo
+// que precisa ser iniciado já esteja iniciado, antes
+// de rodar a aplicação
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

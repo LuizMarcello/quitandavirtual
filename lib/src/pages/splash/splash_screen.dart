@@ -1,40 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
 // import 'package:greengrocer/src/pages/auth/sign_in_screen.dart';
 import 'package:greengrocer/src/pages/commom_widgets/app_name_widget.dart';
-import 'package:greengrocer/src/pages_routes/app_pages.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
+  // Esta classe splashScreen não tem mais a navegação
+  // para a tela SignInScreen. Ela agora só vai apresentar
+  // o splash mesmo. A navegação agora ficou por conta da 
+  // classe AurthController, método Future validateToken
 
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
+  // @override
+  // void initState() {
+  //   super.initState();
 
-    Future.delayed(const Duration(seconds: 5), () {
-      // ignore: use_build_context_synchronously
-      // Navigator.of(context).pushReplacement(
-      //   MaterialPageRoute(
-      //     builder: (c) {
-      //       return const SignInScreen();
-      //     },
-      //   ),
-      // );
+  //   Future.delayed(const Duration(seconds: 5), () {
+  //     // ignore: use_build_context_synchronously
+  //     // Navigator.of(context).pushReplacement(
+  //     //   MaterialPageRoute(
+  //     //     builder: (c) {
+  //     //       return const SignInScreen();
+  //     //     },
+  //     //   ),
+  //     // );
 
-      // Usando o Get(GetX)
-      // Get.offNamed: Remove a tela atual e navega para outra,
-      // a tela atual é destruída, NÃO dá para voltar,
-      // equivalente ao Navigator.pushReplacement
-      Get.offNamed(PagesRoutes.signInRoute);
-    });
-  }
+  //     // Usando o Get(GetX)
+  //     // Get.offNamed: Remove a tela atual e navega para outra,
+  //     // a tela atual é destruída, NÃO dá para voltar,
+  //     // equivalente ao Navigator.pushReplacement
+  //     Get.offNamed(PagesRoutes.signInRoute);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

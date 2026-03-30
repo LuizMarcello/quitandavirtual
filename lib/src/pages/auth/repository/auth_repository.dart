@@ -8,6 +8,34 @@ import 'package:greengrocer/src/models/user_model.dart';
 class AuthRepository {
   final HttpManager _httpManager = HttpManager();
 
+  // Método para validação do "token do usuário" autenticado
+  // Se tudo der certo, vai devolver um objeto do usuário
+  Future<AuthResult> validateToken(String token) async {
+    final resulllt = await _httpManager.restRequest(
+        urlll: EndPoints.validateToken,
+        methoddd: HttpMethods.posttt,
+        headersss: {
+          'X-Parse-Session-Token': token,
+        });
+// Qualquer reposta do backend que tiver a chave
+// 'result', terá dado tudo certo na requisição
+    if (resulllt['result'] != null) {
+// Instanciando um novo usuário
+// Em caso de sucesso: Retornando um objeto UserModel,
+// através da classe AuthResult (Data Matching (Pattern Matching)
+// com Freezed)
+
+      final user = UserModel.fromJson(resulllt['result']);
+      return AuthResult.success(user);
+    } else {
+      // Em caso de êrro: Retornando mensagens
+      // através da classe AuthResult (Data Matching
+      //  (Pattern Matching) com Freezed)
+
+      return AuthResult.error(authErrorsss.authErrorsString(resulllt['error']));
+    }
+  }
+
 // Os retornos possíveis deste Future<>() estáo na classe auth_result.dart
   Future<AuthResult> signIn(
       {required String emailll, required String passworddd}) async {
@@ -15,8 +43,8 @@ class AuthRepository {
       urlll: EndPoints.signin,
       methoddd: HttpMethods.posttt,
       bodyyy: {
-        "email": emailll,
-        "password": passworddd,
+        'email': emailll,
+        'password': passworddd,
       },
     );
 

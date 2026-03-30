@@ -6,6 +6,7 @@ import 'package:greengrocer/src/pages/auth/controller/auth_controller.dart';
 import 'package:greengrocer/src/pages/commom_widgets/app_name_widget.dart';
 import 'package:greengrocer/src/pages/commom_widgets/custom_text_field.dart';
 import 'package:greengrocer/src/pages_routes/app_pages.dart';
+import 'package:greengrocer/src/services/validators.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
@@ -92,16 +93,7 @@ class SignInScreen extends StatelessWidget {
                         controooller: emailController,
                         iconn: Icons.email,
                         labell: 'Email',
-                        validaaator: (email) {
-                          if (email == null || email.isEmpty) {
-                            return 'Digite seu email!';
-                          }
-                          // Usando expressão regular ".isEmail" do GetX.
-                          if (!email.isEmail) {
-                            return 'Digite um email válido';
-                          }
-                          return null;
-                        },
+                        validaaator: emailValidator,
                       ),
 
                       /// Senha
@@ -110,15 +102,7 @@ class SignInScreen extends StatelessWidget {
                         iconn: Icons.lock,
                         labell: 'Senha',
                         isSecrett: true,
-                        validaaator: (password) {
-                          if (password == null || password.isEmpty) {
-                            return 'Digite sua senha!';
-                          }
-                          if (password.length < 8) {
-                            return 'Digite uma senha com mínimo de 8 caracteres!';
-                          }
-                          return null;
-                        },
+                        validaaator: passwordValidator,
                       ),
 
                       /// Botão de entrar

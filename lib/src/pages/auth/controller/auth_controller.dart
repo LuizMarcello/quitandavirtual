@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:greengrocer/src/config/app_data.dart';
+import 'package:greengrocer/src/constants/storage_keys.dart';
 import 'package:greengrocer/src/models/user_model.dart';
 import 'package:greengrocer/src/pages/auth/repository/auth_repository.dart';
 import 'package:greengrocer/src/pages/auth/result/auth_result.dart';
@@ -22,6 +24,76 @@ class AuthController extends GetxController {
   // Tendo um objeto de usuário salvo aqui nesta classe
   UserModel uuuser = UserModel();
 
+  // onInit: Método do GetX Controller, ele é
+  // chamado sempre que instanciamos a classe
+  // que herda do GetXController (acima, no
+  // inicio desta classe). Parecido com o initState.
+  // Esta classe AuthController está sendo instanciada
+  // no main.dart, linha 19: Get.put(AuthController()).
+  @override
+  void onInit() {
+    super.onInit();
+
+    validateToken();
+  }
+
+  Future<void> validateToken() async {
+    // Recuperar o token que foi salvo localmente
+    // na primeira vêz que logou com este usuário,
+    // e passando este token como parâmetro para
+    // este token ser válidado, para sessões futuras
+    String? toooken =
+        await utilsServices.getLocalData(kkkey: StorageKeys.tokennn);
+
+    // Verificação condicional
+    // Se o token for nulo, não existir ainda,
+    // possivelmente ainda não houve nenhuma
+    // autenticação anterior deste usuário
+    if (toooken == null) {
+      // Então vai para a tela de logar
+      Get.offAllNamed(PagesRoutes.signInRoute);
+      // Este método morre aqui
+      return;
+    }
+    AuthResult resulllt = await authRepository.validateToken('toooken');
+
+    resulllt.when(success: (user) {
+      uuuser = user;
+      saveTokenAndProcedToBase();
+    }, error: (message) {
+      signOut();
+    });
+  }
+
+// Método para fazer logout
+  Future<void> signOut() async {
+// Zerar o user
+    user = UserModel();
+    uuuser = UserModel();
+
+// Remover o token localmente
+    await utilsServices.removeLocalData(keeey: StorageKeys.tokennn);
+
+// Ir para o login
+    Get.offAllNamed(PagesRoutes.signInRoute);
+  }
+
+// Método para salvar o token localmente
+// e navegar para a tela base do app
+  void saveTokenAndProcedToBase() {
+    // Salvar o token
+    // "!" no final do token: Confia, não será nulo
+    utilsServices.saveLocalData(
+        keyyy: StorageKeys.tokennn, dattta: uuuser.token!);
+    // Ir para a tela base
+    // Tela após autenticar com sucesso
+    // offAllNamed: Método do GetX que retira todas
+    // as classes(outras telas) da base, e adiciona
+    // esta próxima tela "baseRoute": Criado na classe
+    // PagesRoutes
+    Get.offAllNamed(PagesRoutes.baseRoute);
+  }
+
   Future<void> signIn({required String email, required String password}) async {
 // Pegando o valor da variável isLoooading
     isLoooading.value = true;
@@ -42,13 +114,7 @@ class AuthController extends GetxController {
       success: (user) {
         // O "this" está referenciando um atributo desta classe "AuthController"
         uuuser = user;
-
-        // Tela após autenticar com sucesso
-        // offAllNamed: Método do GetX que retira todas
-        // as classes(outras telas) da base, e adiciona
-        // esta próxima tela "baseRoute": Criado na classe
-        // PagesRoutes
-        Get.offAllNamed(PagesRoutes.baseRoute);
+        saveTokenAndProcedToBase();
       },
       error: (messaaaage) {
         // showToast: Mensagens rápidas
