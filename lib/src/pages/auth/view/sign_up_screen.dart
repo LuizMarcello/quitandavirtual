@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/state_manager.dart';
+import 'package:greengrocer/src/pages/auth/controller/auth_controller.dart';
 import 'package:greengrocer/src/pages/commom_widgets/custom_text_field.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
 import 'package:greengrocer/src/services/validators.dart';
@@ -19,6 +23,8 @@ class SignUpScreen extends StatelessWidget {
 
 // A key para o widget Form(), da linha 58
   final _formKey = GlobalKey<FormState>();
+
+  final authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -61,29 +67,46 @@ class SignUpScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const CustomTextField(
+                          CustomTextField(
                             iconn: Icons.email,
                             labell: 'Email',
+                            // Valor informado no campo email
+                            onSaveddd: (value) {
+                              authController.uuuser.email = value;
+                            },
                             validaaator: emailValidator,
                             // Atributo que ajusta o teclado que vai aparecer,
                             // conforme o campo selecionado, exemplo, campo
                             // email, já aparece com o arroba
                             textInputTypppe: TextInputType.emailAddress,
                           ),
-                          const CustomTextField(
+                          CustomTextField(
                             iconn: Icons.lock,
                             labell: 'Senha',
+                            // Valor informado no campo senha
+                            onSaveddd: (value) {
+                              authController.uuuser.password = value;
+                            },
                             validaaator: passwordValidator,
                             isSecrett: true,
                           ),
-                          const CustomTextField(
+                          CustomTextField(
                             iconn: Icons.person,
                             labell: 'Nome',
+                            // Valor informado no campo nome
+                            onSaveddd: (value) {
+                              authController.uuuser.name = value;
+                            },
                             validaaator: nameValidator,
                           ),
                           CustomTextField(
                             iconn: Icons.phone,
                             labell: 'Celular',
+                            // Valor informado no campo celular
+                            onSaveddd: (value) {
+                              authController.uuuser.phone = value;
+                            },
+
                             validaaator: phoneValidator,
                             // Atributo que ajusta o teclado que vai aparecer,
                             // conforme o campo selecionado, exemplo, campo
@@ -94,6 +117,10 @@ class SignUpScreen extends StatelessWidget {
                           CustomTextField(
                             iconn: Icons.file_copy,
                             labell: 'CPF',
+                            // Valor informado no campo cpf
+                            onSaveddd: (value) {
+                              authController.uuuser.cpf = value;
+                            },
                             validaaator: cpfValidator,
                             // Atributo que ajusta o teclado que vai aparecer,
                             // conforme o campo selecionado, exemplo, campo
@@ -103,23 +130,47 @@ class SignUpScreen extends StatelessWidget {
                           ),
                           SizedBox(
                             height: 50,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18),
-                                ),
-                              ),
-                              onPressed: () {},
-                              child: Text(
-                                'Cadastrar usuário',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.white,
-                                ),
-                              ),
+                            child: Obx(
+                              () {
+                                return ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18),
+                                    ),
+                                  ),
+                                  onPressed: authController.isLoooading.value
+                                      ? null
+                                      : () {
+                                          FocusScope.of(context).unfocus();
+
+                                          if (
+                                              // Executa a validação de todos os campos do formulário
+                                              // Se todos forem válidos → retorna true
+                                              // Se algum for inválido → retorna false
+                                              // chama todos os validaaator() de todos os campos
+                                              _formKey.currentState!
+                                                  .validate()) {
+                                            // Se esa validação acorrer com sucesso:
+                                            // Aciona o onSaved() de cada um dos campos
+                                            // e seta a variável referente, do "uuuser"
+                                            // da classe authController:
+                                            _formKey.currentState!.save();
+                                            authController.signUp();
+                                          }
+                                        },
+                                  child: authController.isLoooading.value
+                                      ? CircularProgressIndicator()
+                                      : const Text(
+                                          'Cadastrar usuário',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.white),
+                                        ),
+                                );
+                              },
                             ),
-                          ),
+                          )
                         ],
                       ),
                     ),

@@ -1,8 +1,11 @@
 // ignore_for_file: library_prefixes
 
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:greengrocer/src/config/app_data.dart' as appDart;
 import 'package:greengrocer/src/config/custom_colors.dart';
+import 'package:greengrocer/src/pages/auth/controller/auth_controller.dart';
 import 'package:greengrocer/src/pages/commom_widgets/custom_text_field.dart';
 
 class ProfileTab extends StatefulWidget {
@@ -13,6 +16,8 @@ class ProfileTab extends StatefulWidget {
 }
 
 class _ProfileTabState extends State<ProfileTab> {
+  final authController = Get.find<AuthController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +29,9 @@ class _ProfileTabState extends State<ProfileTab> {
         backgroundColor: Colors.green,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              authController.signOut();
+            },
             icon: const Icon(Icons.logout, color: Colors.white),
           ),
         ],

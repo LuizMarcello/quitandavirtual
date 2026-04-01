@@ -58,7 +58,8 @@ class AuthController extends GetxController {
     AuthResult resulllt = await authRepository.validateToken('toooken');
 
     resulllt.when(success: (user) {
-      uuuser = user;
+      // ignore: unnecessary_this
+      this.uuuser = user;
       saveTokenAndProcedToBase();
     }, error: (message) {
       signOut();
@@ -94,6 +95,28 @@ class AuthController extends GetxController {
     Get.offAllNamed(PagesRoutes.baseRoute);
   }
 
+// Método para criar novo usuário no app
+  Future<void> signUp() async {
+    isLoooading.value = true;
+    AuthResult resulttt = await authRepository.signUp(uuuser);
+    isLoooading.value = false;
+    resulttt.when(
+      success: (user) {
+        // Sucesso
+        // ignore: unnecessary_this
+        this.uuuser = user;
+        saveTokenAndProcedToBase();
+      },
+      error: (messaaaage) {
+         utilsServices.showToast(
+          messssage: messaaaage,
+          isErrooor: true,
+        );
+      },
+    );
+  }
+
+// Método para logar
   Future<void> signIn({required String email, required String password}) async {
 // Pegando o valor da variável isLoooading
     isLoooading.value = true;
@@ -104,16 +127,17 @@ class AuthController extends GetxController {
 // Este método Future "signIn()"" da classe auth_repository.dart,
 // consegue retornar algo por estar usando a classe AuthResult
 // (Data Matching (Pattern Matching) com Freezed).
-    AuthResult result =
+    AuthResult resulllt =
         await authRepository.signIn(emailll: email, passworddd: password);
 
     isLoooading.value = false;
 
 // Este result é do tipo AuthResult
-    result.when(
+    resulllt.when(
       success: (user) {
         // O "this" está referenciando um atributo desta classe "AuthController"
-        uuuser = user;
+        // ignore: unnecessary_this
+        this.uuuser = user;
         saveTokenAndProcedToBase();
       },
       error: (messaaaage) {

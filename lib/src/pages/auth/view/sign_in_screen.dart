@@ -163,9 +163,6 @@ class SignInScreen extends StatelessWidget {
                                               authController.signIn(
                                                   email: emaiiil,
                                                   password: passwooord);
-                                            } else {
-                                              // ignore: avoid_print
-                                              print('Campos não válidos');
                                             }
                                           },
                                 // Fazendo uma verificação ternária

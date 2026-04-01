@@ -1,5 +1,5 @@
-import 'package:get/get_utils/src/extensions/string_extensions.dart';
 import 'package:get/get.dart';
+import 'package:get/get_utils/src/extensions/string_extensions.dart';
 
 // Validação do campo do email, para os formulários
 String? emailValidator(String? email) {
@@ -46,7 +46,9 @@ String? phoneValidator(String? phone) {
     return 'Digite seu celular!';
   }
 
-  if (!phone.isPhoneNumber) return 'Digite um número válido!';
+  if (phone.length < 14 || !phone.isPhoneNumber) {
+    return 'Digite um número válido!';
+  }
   // Está tudo OK
   return null;
 }
@@ -57,7 +59,7 @@ String? cpfValidator(String? cpf) {
     return 'Digite seu CPF';
   }
 
-  if (cpf.isCpf) return 'Digite um CPF válido!';
+  if (!cpf.isCpf) return 'Digite um CPF válido!';
   // Está tudo OK
   return null;
 }

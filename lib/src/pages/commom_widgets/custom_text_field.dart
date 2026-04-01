@@ -13,6 +13,11 @@ class CustomTextField extends StatefulWidget {
   // e ela mesmo também é nullable,
   // não precisa validar todos os campos
   final String? Function(String?)? validaaator;
+  // Função onSaveddd: Captura os conteúdos
+  // de cada campo do formulário
+  // Não retorna nada, e como parâmetro,
+  // uma nullable string
+  final void Function(String?)? onSaveddd;
   final TextEditingController? controooller;
   // Atributo que ajusta o teclado que vai aparecer,
   // conforme o campo selecionado, exemplo, campo
@@ -28,6 +33,7 @@ class CustomTextField extends StatefulWidget {
       this.initialValuuue,
       this.readOnlyyy = false,
       this.validaaator,
+      this.onSaveddd,
       this.controooller,
       this.textInputTypppe});
 
@@ -58,6 +64,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         inputFormatters: widget.inputFormattersss,
         obscureText: isObscuree,
         validator: widget.validaaator,
+        onSaved: widget.onSaveddd,
         // Classe StatefulWidget, necessário
         // acrescentar o widget
         keyboardType: widget.textInputTypppe,
