@@ -2,7 +2,11 @@ import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:greengrocer/src/base/base_screen.dart';
 import 'package:greengrocer/src/pages/auth/view/sign_in_screen.dart';
 import 'package:greengrocer/src/pages/auth/view/sign_up_screen.dart';
+import 'package:greengrocer/src/pages/home/binding/home_binding.dart';
 import 'package:greengrocer/src/pages/splash/splash_screen.dart';
+
+// Esta classe AppPages, trata da listagem
+// via GetX, das telas do APP
 
 abstract class AppPages {
   // Uma lista de GetPages(GetX)
@@ -11,7 +15,13 @@ abstract class AppPages {
     GetPage(name: PagesRoutes.splashRoute, page: () => const SplashScreen()),
     GetPage(name: PagesRoutes.signInRoute, page: () => SignInScreen()),
     GetPage(name: PagesRoutes.signUpRoute, page: () => SignUpScreen()),
-    GetPage(name: PagesRoutes.baseRoute, page: () => const BaseScreen())
+    GetPage(
+        name: PagesRoutes.baseRoute,
+        // Indicando para esta classe HomeBinding para
+        // entrar em ação e injetar na memória o objeto
+        // HomeController
+        bindings: [HomeBinding()],
+        page: () => const BaseScreen())
   ];
 }
 

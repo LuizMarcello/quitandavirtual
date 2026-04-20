@@ -23,6 +23,7 @@ class CustomTextField extends StatefulWidget {
   // conforme o campo selecionado, exemplo, campo
   // email, já aparece com o arroba
   final TextInputType? textInputTypppe;
+  final GlobalKey<FormFieldState>? formFieldKeyyy;
 
   const CustomTextField(
       {super.key,
@@ -35,7 +36,9 @@ class CustomTextField extends StatefulWidget {
       this.validaaator,
       this.onSaveddd,
       this.controooller,
-      this.textInputTypppe});
+      this.textInputTypppe, 
+      this.formFieldKeyyy});
+      
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -58,6 +61,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       padding: const EdgeInsets.only(bottom: 15.0),
       ///////////////////////////////////////////////////////////////
       child: TextFormField(
+        key: widget.formFieldKeyyy,
         controller: widget.controooller,
         readOnly: widget.readOnlyyy,
         initialValue: widget.initialValuuue,

@@ -10,8 +10,8 @@ import 'package:greengrocer/src/services/utils_services.dart';
 // Esta é a classe controladora do "GetX"
 // Gerenciador de estados das telas de "signIn" e "signUp"
 class AuthController extends GetxController {
-// Variável observável "isLoooading", se a
-// tela está carregando ou não
+// Variável observável(.obs) "isLoooading",
+// se a tela está carregando ou não
 // Valor inicial "false".
   RxBool isLoooading = false.obs;
 
@@ -66,6 +66,11 @@ class AuthController extends GetxController {
     });
   }
 
+// Método para resetar a senha
+  Future<void> resetPassword(String email) async {
+    await authRepository.resetPassword(email);
+  }
+
 // Método para fazer logout
   Future<void> signOut() async {
 // Zerar o user
@@ -108,7 +113,7 @@ class AuthController extends GetxController {
         saveTokenAndProcedToBase();
       },
       error: (messaaaage) {
-         utilsServices.showToast(
+        utilsServices.showToast(
           messssage: messaaaage,
           isErrooor: true,
         );

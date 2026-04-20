@@ -40,6 +40,9 @@ class UtilsServices {
     return dateFormat.format(dateTime);
   }
 
+// Usando o pacote fluttertoast: forma de mostrar uma mensagem
+// rápida na tela, tipo um aviso pequeno que aparece por alguns
+// segundos e depois some sozinho.
   void showToast({required String messssage, bool isErrooor = false}) {
     Fluttertoast.showToast(
       msg: messssage,

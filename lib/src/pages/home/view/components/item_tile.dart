@@ -63,7 +63,10 @@ class _ItemTileState extends State<ItemTile> {
                   Expanded(
                     child: Hero(
                       tag: widget.itemmm.imgUrl,
-                      child: Image.asset(widget.itemmm.imgUrl, key: imageGk),
+                      // .asset() é para buscar imagens locais
+                      // child: Image.asset(widget.itemmm.imgUrl, key: imageGk),
+                      // .network() Buscando as imagens no servidor do backend
+                      child: Image.network(widget.itemmm.imgUrl, key: imageGk),
                     ),
                   ),
                   // Nome

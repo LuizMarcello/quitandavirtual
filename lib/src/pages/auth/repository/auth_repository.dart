@@ -1,6 +1,7 @@
 import 'package:greengrocer/src/constants/endpoints.dart';
 // ignore: library_prefixes
-import 'package:greengrocer/src/pages/auth/repository/auth_errors.dart' as authErrorsss;
+import 'package:greengrocer/src/pages/auth/repository/auth_errors.dart'
+    as authErrorsss;
 import 'package:greengrocer/src/pages/auth/result/auth_result.dart';
 import 'package:greengrocer/src/services/http_manager.dart';
 import 'package:greengrocer/src/models/user_model.dart';
@@ -63,5 +64,13 @@ class AuthRepository {
       bodyyy: user.toJson(),
     );
     return handleUserOrError(resulttt);
+  }
+
+  // Método para recuperar a senha
+  Future<void> resetPassword(String email) async {
+    await _httpManager.restRequest(
+        urlll: EndPoints.resetPassword,
+        methoddd: HttpMethods.posttt,
+        bodyyy: {'email': email});
   }
 }
