@@ -1,16 +1,10 @@
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:add_to_cart_animation/add_to_cart_icon.dart';
-// import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'package:greengrocer/src/config/app_data.dart' as app_data;
 import 'package:greengrocer/src/config/custom_colors.dart';
 import 'package:greengrocer/src/pages/commom_widgets/app_name_widget.dart';
 import 'package:greengrocer/src/pages/commom_widgets/custom_shimmer.dart';
-// import 'package:greengrocer/src/pages/base/controller/navigation_controller.dart';
-// import 'package:greengrocer/src/pages/cart/controller/cart_controller.dart';
-// import 'package:greengrocer/src/pages/common_widgets/app_name_widget.dart';
-// import 'package:greengrocer/src/pages/common_widgets/custom_shimmer.dart';
 import 'package:greengrocer/src/pages/home/controller/home_controller.dart';
 import 'package:greengrocer/src/pages/home/view/components/category_tile.dart';
 import 'package:greengrocer/src/pages/home/view/components/item_tile.dart';
@@ -26,6 +20,8 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   GlobalKey<CartIconKey> globalKeyCartItems = GlobalKey<CartIconKey>();
 
+  // Controller para controlar o campo de textos da pesquisa de produtos
+  // Usando abaixo, na linha 95
   final searchController = TextEditingController();
   // final navigationController = Get.find<NavigationController>();
 
@@ -36,6 +32,10 @@ class _HomeTabState extends State<HomeTab> {
   }
 
   final UtilsServices utilsServices = UtilsServices();
+
+// Para o getX encontrar na memória do dispositivo, o objeto
+// do tipo HomeController, na injeção de dependências
+  // final controller = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -93,10 +93,17 @@ class _HomeTabState extends State<HomeTab> {
                     vertical: 10,
                   ),
                   child: TextFormField(
+                    controller: searchController,
                     //   controller: searchController,
                     //   onChanged: (value) {
                     //     controller.searchTitle.value = value;
                     //   },
+                    // Para ir fazendo a pesquisa automáticamente, sempre
+                    // que digitar alguma coisa no campo de pesquisa
+                    onChanged: (value) {
+                      controller.searchTitle.value = value;
+                    },
+
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
@@ -111,6 +118,26 @@ class _HomeTabState extends State<HomeTab> {
                         color: CustomColors.customContrastColor,
                         size: 21,
                       ),
+                      // Se o campo de pesquise tiver algum conteúdo digitado,
+                      // vai aparecer o Icons.close(X), para limpar
+                      suffixIcon: controller.searchTitle.value.isNotEmpty
+                          ? IconButton(
+                              onPressed: () {
+                                // Limpa o campo de textos da pesquisa por produtos
+                                searchController.clear();
+                                // Nosso HomeController
+                                // Este "value", é por ser variável observável
+                                controller.searchTitle.value = '';
+                                // Fechando/recolhendo o teclado
+                                FocusScope.of(context).unfocus();
+                              },
+                              icon: Icon(
+                                Icons.close,
+                                color: CustomColors.customContrastColor,
+                                size: 21,
+                              ),
+                            )
+                          : null,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(60),
                         borderSide: const BorderSide(
@@ -184,6 +211,15 @@ class _HomeTabState extends State<HomeTab> {
                           ),
                           itemCount: controller.allProductsss.length,
                           itemBuilder: (_, index) {
+                            // Se já está sendo mostrado o último item da lista
+                            // e
+                            // Negação: Se não está na ultima pagina
+                            if (((index + 1) ==
+                                    controller.allProductsss.length) &&
+                                !controller.isLastPageee) {
+                              controller.loadMoreProducts();
+                            }
+
                             return ItemTile(
                               itemmm: controller.allProductsss[index],
                               cartAnimationMethod: itemSelectedCartAnimations,

@@ -29,6 +29,19 @@ class HomeController extends GetxController {
   // (um “atributo que executa código”).
   List<ItemModel> get allProductsss => currentCategory?.items ?? [];
 
+  // Variável observável tipo String, para usar no
+  // campo de pesquisa de produtos, pelo título
+  RxString searchTitle = ''.obs;
+
+// Getter para saber se já está na última página do backend, ou não
+  bool get isLastPageee {
+    // Na verdade, estas duas lógicas definem se é a última pagina
+    // Se o tamanho da lista de items desta categoria...
+    // Se retornar true, sim, é a última página
+    if (currentCategory!.items.length < itemsPerPage) return true;
+    return currentCategory!.pagination * itemsPerPage > allProductsss.length;
+  }
+
   // No GetX existem dois principais:
 // 🟢 GetBuilder
 // manual (update())
@@ -56,9 +69,25 @@ class HomeController extends GetxController {
   // GetX onInit()
   // Como se fosse o initState normal
   // Assim, executando o getAllCategories()
+  // onInit(): Método que é iniciado sempre que
+  // instanciamos esta classe controladora do GetX
   @override
   void onInit() {
     super.onInit();
+
+    // debounce: Método do Getx
+    // Vai ficar observando a variável observável
+    // searchTitle, sempre que ela for modificada,
+    // vai ser feito alguma coisa na callback
+    debounce(
+      searchTitle,
+      (_) {
+        update();
+        // print('oi mundao');
+        // print(searchTitle);
+      },
+      time: const Duration(milliseconds: 1200),
+    );
 
     getAllCategories();
   }
@@ -105,9 +134,16 @@ class HomeController extends GetxController {
     );
   }
 
-// Método para obter os produtos da categoria
-  Future<void> getAllProducts() async {
-    setLoading(true, isProduct: true);
+  void loadMoreProducts() {
+    currentCategory!.pagination++;
+    getAllProducts(canLoad: false);
+  }
+
+// Método para obter todos os produtos da categoria
+  Future<void> getAllProducts({bool canLoad = true}) async {
+    if (canLoad) {
+      setLoading(true, isProduct: true);
+    }
 
     Map<String, dynamic> body = {
       'page': currentCategory!.pagination,
@@ -120,7 +156,10 @@ class HomeController extends GetxController {
 
     result.when(
       success: (data) {
-        currentCategory!.items = data;
+        // Assim, caso já tenha conteúdo nesta lista
+        // de itens, será adicionado todos os outros
+        // itens, vindos do backend
+        currentCategory!.items.addAll(data);
       },
       error: (message) {
         utilsServices.showToast(
