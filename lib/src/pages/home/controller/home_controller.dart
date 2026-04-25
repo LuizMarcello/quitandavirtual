@@ -78,17 +78,12 @@ class HomeController extends GetxController {
     // debounce: Método do Getx
     // Vai ficar observando a variável observável
     // searchTitle, sempre que ela for modificada,
-    // vai ser feito alguma coisa na callback
+    // vai ser feito alguma coisa na arrow-function
     debounce(
       searchTitle,
-      (_) {
-        update();
-        // print('oi mundao');
-        // print(searchTitle);
-      },
+      (_) => filterByTitle(),
       time: const Duration(milliseconds: 1200),
     );
-
     getAllCategories();
   }
 
@@ -134,6 +129,59 @@ class HomeController extends GetxController {
     );
   }
 
+  // allCategories: Todas as categorias
+  // allProductsCategory: Todos os produtos de todas as categorias
+
+// Método para pesquisar produtos pelo titulo
+  void filterByTitle() {
+// Inicialmente, apagar os produtos de todas as categorias
+// Laço: Recuperando cada uma das categorias
+// da lista de categorias
+    for (var category in allCategories) {
+      category.items.clear();
+      category.pagination = 0;
+    }
+
+    // Verificando se o campo de pesquisas está vazio
+    if (searchTitle.value.isEmpty) {
+      // Se estiver vazio, removendo a lista "allProductsCategory"
+      // do inicio da lista allCategories, da posição 0
+      allCategories.removeAt(0);
+    } else {
+// Confirmando se "allProductsCategory(todos)" já
+// não está presente na lista "AllCategories"
+      CategoryModel? c = allCategories.firstWhereOrNull((cat) => cat.id == '');
+
+// Se "c" for nulo, a allProductsCategory ainda não
+// existe em "allCategories", então será criada
+      if (c == null) {
+        // Criando uma nova lista de categorias com
+        // todos os produtos de todas as categorias
+        final allProductsCategory = CategoryModel(
+          title: 'Todos',
+          id: '',
+          items: [],
+          pagination: 0,
+        );
+
+// Inserindo a lista "allProductsCategory"
+// no inicio da lista "allCategories"
+        allCategories.insert(0, allProductsCategory);
+      } else {
+        c.items.clear();
+        c.pagination = 0;
+      }
+    }
+// Fazendo com que a categoria atual selecionada
+// seja atribuida a "allProductsCategory"
+    currentCategory = allCategories.first;
+// Atualizando o frontEnd
+// Reconstrói GetBuilder cada vêz que é chamado
+    update();
+// Obtendo todos os produtos da referida categoria
+    getAllProducts();
+  }
+
   void loadMoreProducts() {
     currentCategory!.pagination++;
     getAllProducts(canLoad: false);
@@ -145,13 +193,27 @@ class HomeController extends GetxController {
       setLoading(true, isProduct: true);
     }
 
-    Map<String, dynamic> body = {
+    Map<String, dynamic> bodyyy = {
       'page': currentCategory!.pagination,
       'categoryId': currentCategory!.id,
-      "itemsPerPage": itemsPerPage
+      'itemsPerPage': itemsPerPage
     };
 
-    HomeResult<ItemModel> result = await homeRepository.getAllProducts(body);
+    // Este "value" é porque é uma variável observável
+    if (searchTitle.value.isNotEmpty) {
+      // Se o campo de pesquisa não estiver vazio,
+      // acrescenta o campo "title" no Map<> bodyyy,
+      // para ser usado na pesquisa
+      bodyyy['title'] = searchTitle.value;
+
+      // Se a categoria "todos" estiver selecionada,
+      // será removida a categoria corrente atual
+      if (currentCategory!.id == '') {
+        bodyyy.remove('categoryId');
+      }
+    }
+
+    HomeResult<ItemModel> result = await homeRepository.getAllProducts(bodyyy);
     setLoading(false, isProduct: true);
 
     result.when(

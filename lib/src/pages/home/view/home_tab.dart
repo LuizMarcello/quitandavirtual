@@ -199,32 +199,49 @@ class _HomeTabState extends State<HomeTab> {
               builder: (controller) {
                 return Expanded(
                   child: !controller.isProductLoading
-                      ? GridView.builder(
-                          padding: const EdgeInsets.fromLTRB(15, 0, 16, 16),
-                          physics: const BouncingScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 10,
-                            childAspectRatio: 9 / 11.5,
+                      ? Visibility(
+                          visible: (controller.currentCategory?.items ?? [])
+                              .isNotEmpty,
+                          replacement: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.search_off,
+                                size: 40,
+                                color: CustomColors.customSwatchColor,
+                              ),
+                              Text(
+                                'Não itens a serem apresentados!!',
+                              ),
+                            ],
                           ),
-                          itemCount: controller.allProductsss.length,
-                          itemBuilder: (_, index) {
-                            // Se já está sendo mostrado o último item da lista
-                            // e
-                            // Negação: Se não está na ultima pagina
-                            if (((index + 1) ==
-                                    controller.allProductsss.length) &&
-                                !controller.isLastPageee) {
-                              controller.loadMoreProducts();
-                            }
+                          child: GridView.builder(
+                            padding: const EdgeInsets.fromLTRB(15, 0, 16, 16),
+                            physics: const BouncingScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
+                              childAspectRatio: 9 / 11.5,
+                            ),
+                            itemCount: controller.allProductsss.length,
+                            itemBuilder: (_, index) {
+                              // Se já está sendo mostrado o último item da lista
+                              // e
+                              // Negação: Se não está na ultima pagina
+                              if (((index + 1) ==
+                                      controller.allProductsss.length) &&
+                                  !controller.isLastPageee) {
+                                controller.loadMoreProducts();
+                              }
 
-                            return ItemTile(
-                              itemmm: controller.allProductsss[index],
-                              cartAnimationMethod: itemSelectedCartAnimations,
-                            );
-                          },
+                              return ItemTile(
+                                itemmm: controller.allProductsss[index],
+                                cartAnimationMethod: itemSelectedCartAnimations,
+                              );
+                            },
+                          ),
                         )
                       : GridView.count(
                           padding: const EdgeInsets.fromLTRB(15, 0, 16, 16),
