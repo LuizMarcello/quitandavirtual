@@ -1,7 +1,8 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:greengrocer/src/base/base_screen.dart';
+import 'package:greengrocer/src/pages/base/base_screen.dart';
 import 'package:greengrocer/src/pages/auth/view/sign_in_screen.dart';
 import 'package:greengrocer/src/pages/auth/view/sign_up_screen.dart';
+import 'package:greengrocer/src/pages/base/binding/navigation_binding.dart';
 import 'package:greengrocer/src/pages/home/binding/home_binding.dart';
 import 'package:greengrocer/src/pages/splash/splash_screen.dart';
 
@@ -17,10 +18,16 @@ abstract class AppPages {
     GetPage(name: PagesRoutes.signUpRoute, page: () => SignUpScreen()),
     GetPage(
         name: PagesRoutes.baseRoute,
-        // Indicando para esta classe HomeBinding para
-        // entrar em ação e injetar na memória o objeto
-        // HomeController
-        bindings: [HomeBinding()],
+        bindings: [
+          // Indicando para esta classe NavigationBinding
+          // entrar em ação e injetar na memória do dispositivo
+          // o objeto NavigationController
+          NavigationBinding(),
+          // Indicando para esta classe HomeBinding entrar
+          // em ação e injetar na memória do dispositivo o
+          // objeto HomeController
+          HomeBinding(),
+        ],
         page: () => const BaseScreen())
   ];
 }

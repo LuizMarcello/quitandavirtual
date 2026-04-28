@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
 import 'package:greengrocer/src/models/item_model.dart';
+import 'package:greengrocer/src/pages/base/controller/navigation_controller.dart';
 import 'package:greengrocer/src/pages/commom_widgets/quantity_widget.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
 
@@ -19,11 +23,15 @@ class _ProductScreenState extends State<ProductScreen> {
 
   int cartItemQuantity = 1;
 
+  // GetX
+  // Recuperando da memória do dispositivo uma instância
+  // do objeto NavigationController
+  final navigationController = Get.find<NavigationController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white.withAlpha(230),
-
       body: Stack(
         children: [
           // Conteúdo
@@ -32,10 +40,9 @@ class _ProductScreenState extends State<ProductScreen> {
               Expanded(
                 child: Hero(
                   tag: widget.iteeem.imgUrl,
-                  child: Image.asset(widget.iteeem.imgUrl),
+                  child: Image.network(widget.iteeem.imgUrl),
                 ),
               ),
-
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.all(32),
@@ -115,7 +122,15 @@ class _ProductScreenState extends State<ProductScreen> {
                               borderRadius: BorderRadiusGeometry.circular(15),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            // Fechar a tela dos produtos
+                            // GetX:
+                            Get.back();
+
+                            // Abrir o carrinho
+                            navigationController
+                                .navigatePageView(NavigationTabs.cart);
+                          },
                           label: Text(
                             'Add no carrinho',
                             style: const TextStyle(

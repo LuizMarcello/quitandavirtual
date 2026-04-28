@@ -1,0 +1,77 @@
+import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:greengrocer/src/pages/base/controller/navigation_controller.dart';
+import 'package:greengrocer/src/pages/cart/cart_tab.dart';
+import 'package:greengrocer/src/pages/home/view/home_tab.dart';
+import 'package:greengrocer/src/pages/orders/orders_tab.dart';
+import 'package:greengrocer/src/pages/profile/profile_tab.dart';
+
+class BaseScreen extends StatefulWidget {
+  const BaseScreen({super.key});
+
+  @override
+  State<BaseScreen> createState() => _BaseScreenState();
+}
+
+class _BaseScreenState extends State<BaseScreen> {
+  // Qual está selecionado no bottomNavigationBar
+  // int currentIndexxx = 0;
+
+  // GetX: Injetando na memória do dispositivo uma
+  // instância do objeto, para que seja possivel
+  // recuperar de qualquer lugar do aplicativo,
+  // para ajudar na navegação
+
+  // GetX:
+  // Recuperando, da memória do dispositivo, o objeto do
+  // NavigationController, injetado através da classe
+  // NavigationBinding e classe AppPages
+  final navigationController = Get.find<NavigationController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: PageView(
+        /// Travando para não alterar entre as telas, com o mouse
+        physics: const NeverScrollableScrollPhysics(),
+        controller: navigationController.pageController,
+        children: const [HomeTab(), CartTab(), OrdersTab(), ProfileTab()],
+      ),
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+          currentIndex: navigationController.currentIndex,
+          onTap: (index) {
+            navigationController.navigatePageView(index);
+          },
+
+          type: BottomNavigationBarType.fixed,
+          /// backgroundColor da bottomNavigationBar
+          backgroundColor: Colors.green,
+
+          /// Mudando a cor do BottomNavigationBarItem selecionado
+          selectedItemColor: Colors.white,
+
+          /// As cores dos BottomNavigationBarItem não-selecionados
+          unselectedItemColor: Colors.white.withAlpha(100),
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart_outlined),
+              label: 'Carrinho',
+            ),
+            BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Pedidos'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outlined),
+              label: 'Perfil',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
