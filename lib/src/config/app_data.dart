@@ -1,4 +1,4 @@
-import 'package:greengrocer/src/models/cart_item_model.dart';
+// import 'package:greengrocer/src/models/cart_item_model.dart';
 import 'package:greengrocer/src/models/item_model.dart';
 import 'package:greengrocer/src/models/order_model.dart';
 import 'package:greengrocer/src/models/user_model.dart';
@@ -67,11 +67,11 @@ final List<String> categoriesss = [
   'Cereais',
 ];
 
-List<CartItemModel> cartItems = [
-  CartItemModel(itttem: apple, quantity: 1),
-  CartItemModel(itttem: mango, quantity: 1),
-  CartItemModel(itttem: guava, quantity: 3),
-];
+// List<CartItemModel> cartItems = [
+//   CartItemModel(itttem: apple, quantity: 1),
+//   CartItemModel(itttem: mango, quantity: 1),
+//   CartItemModel(itttem: guava, quantity: 3),
+// ];
 
 UserModel user = UserModel(
   name: 'João Pedro',
@@ -92,8 +92,8 @@ List<OrderModel> orders = [
     overdueDateTime: DateTime.parse('2026-06-08 11:00:10.458'),
     total: 11.0,
     itemsss: [
-      CartItemModel(itttem: apple, quantity: 2),
-      CartItemModel(itttem: mango, quantity: 3),
+      // CartItemModel(itttem: apple, quantity: 2),
+      // CartItemModel(itttem: mango, quantity: 3),
     ],
   ),
 
@@ -108,7 +108,7 @@ List<OrderModel> orders = [
     overdueDateTime: DateTime.parse('2026-06-08 11:00:10.458'),
     total: 11.0,
     itemsss: [
-      CartItemModel(itttem: apple, quantity: 2),
+      // CartItemModel(itttem: apple, quantity: 2),
     ],
   ),
 ];

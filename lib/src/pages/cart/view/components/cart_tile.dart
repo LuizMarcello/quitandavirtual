@@ -7,13 +7,12 @@ import 'package:greengrocer/src/services/utils_services.dart';
 // Cada item do carrinho
 
 class CartTile extends StatefulWidget {
-  const CartTile({super.key, required this.cartItemmm, required this.removvve});
+  const CartTile({super.key, required this.cartItemmm});
 
   // Estes foram inicializados no construtor
   // Para usar este componente, estes serão
   // parâmetros enviados
   final CartItemModel cartItemmm;
-  final Function(CartItemModel) removvve;
 
   @override
   State<CartTile> createState() => _CartTileState();
@@ -30,7 +29,7 @@ class _CartTileState extends State<CartTile> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       child: ListTile(
         // imagem
-        leading: Image.asset(
+        leading: Image.network(
           widget.cartItemmm.itttem.imgUrl,
           height: 60,
           width: 60,
@@ -55,16 +54,7 @@ class _CartTileState extends State<CartTile> {
         trailing: QuantityWidget(
           valuuue: widget.cartItemmm.quantity,
           suffixTexxxt: widget.cartItemmm.itttem.unit,
-          resulttt: (quantity) {
-            setState(() {
-              widget.cartItemmm.quantity = quantity;
-
-              if (quantity == 0) {
-                // Remover item do carrinho
-                widget.removvve(widget.cartItemmm);
-              }
-            });
-          },
+          resulttt: (quantity) {},
           isRemovable: true,
         ),
       ),

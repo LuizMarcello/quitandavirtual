@@ -19,6 +19,9 @@ void main() async {
   // AuthController na memória do dispositivo, para que
   // depois possa acessá-lo de qualquer lugar do app.
   // Usando aqui o Get(GetX)
+  // Assim sendo, estamos injetando primeiro a validação
+  // do objeto do usuário autenticado, para ter acesso ao
+  // seu token e userId, de qualquer lugar do app
   Get.put(AuthController());
 
   runApp(const MyApp());
