@@ -5,6 +5,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
 import 'package:greengrocer/src/models/item_model.dart';
 import 'package:greengrocer/src/pages/base/controller/navigation_controller.dart';
+import 'package:greengrocer/src/pages/cart/controller/cart_controller.dart';
 import 'package:greengrocer/src/pages/commom_widgets/quantity_widget.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
 
@@ -22,6 +23,9 @@ class _ProductScreenState extends State<ProductScreen> {
   final UtilsServices utilsServices = UtilsServices();
 
   int cartItemQuantity = 1;
+
+  // Referenciando a classe controladora do carrinho
+  final cartController = Get.find<CartController>();
 
   // GetX
   // Recuperando da memória do dispositivo uma instância
@@ -123,11 +127,17 @@ class _ProductScreenState extends State<ProductScreen> {
                             ),
                           ),
                           onPressed: () {
-                            // Fechar a tela dos produtos
+                            // Fechando a tela dos produtos
                             // GetX:
                             Get.back();
 
-                            // Abrir o carrinho
+                            // Adicionando este item no carrinho
+                            cartController.addItemToCart(
+                              itttem: widget.iteeem,
+                              quantiiity: cartItemQuantity,
+                            );
+
+                            // Abrindo o carrinho
                             navigationController
                                 .navigatePageView(NavigationTabs.cart);
                           },

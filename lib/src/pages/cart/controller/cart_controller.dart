@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:greengrocer/src/models/cart_item_model.dart';
+import 'package:greengrocer/src/models/item_model.dart';
 import 'package:greengrocer/src/pages/auth/controller/auth_controller.dart';
 import 'package:greengrocer/src/pages/cart/cart_result/cart_result.dart';
 import 'package:greengrocer/src/pages/cart/repository/cart_repository.dart';
@@ -60,5 +61,63 @@ class CartController extends GetxController {
         );
       },
     );
+  }
+
+  // Método que retorna um index específico deste
+  // produto, da lista de itens do produto, para
+  // saber se realmente ele existe na lista, para
+  // então alterar a sua quantidade
+  // Retorna um inteiro referente ao index, ou se
+  // não encontrar, retorna -1 (não existe o index)
+  int getItemIndex(ItemModel iiitem) {
+    return cartItennns.indexWhere((itemInList) => itemInList.id == iiitem.id);
+  }
+
+  // Método para adicionar novos itens no carrinho
+  Future<void> addItemToCart(
+      {required ItemModel itttem, int quantiiity = 1}) async {
+    int itemIndex = getItemIndex(itttem);
+
+    if (itemIndex >= 0) {
+      // Já existe o item na listagem de itens
+      // Então, só vai ser alterada sua quantidade
+      cartItennns[itemIndex].quantity += quantiiity;
+    } else {
+      // Ainda não existe o item na listagem de itens do carrinho
+      // Criando a variável "resuuult", que contém o retôrno
+      // de cartRepository.addItemToCart(), um CartResult<String>:
+      // success com o id em texto do item(novo produto) criado no
+      // servidor, dos itens adicionados no carrinho
+      final CartResult<String> resuuult = await cartRepository.addItemToCart(
+        userId: authController.uuuser.id!,
+        token: authController.uuuser.token!,
+        productId: itttem.id,
+        quantity: quantiiity,
+      );
+
+      resuuult.when(
+        success: (cartItemId) {
+          // Se conseguindo adicionar o item no carrinho
+          // add: Adicionando então este novo item do carrinho
+          // na lista dos itens do carrinho, através de uma nova
+          // instância de CartItemModel
+          cartItennns.add(
+            CartItemModel(
+              itttem: itttem,
+              id: cartItemId,
+              quantity: quantiiity,
+            ),
+          );
+        },
+        // Se não conseguindo adicionar o item no carrinho
+        error: (message) {
+          utilsServices.showToast(
+            messssage: message,
+            isErrooor: true,
+          );
+        },
+      );
+    }
+    update();
   }
 }

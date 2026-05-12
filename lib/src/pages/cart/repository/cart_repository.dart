@@ -9,6 +9,7 @@ import 'package:greengrocer/src/services/http_manager.dart';
 class CartRepository {
   final _httpManager = HttpManager();
 
+// Método de recuperação dos itens do carrinho
   Future<CartResult<List<CartItemModel>>> getCartItems(
       {required String tokeeen, required String userId}) async {
     final resulllt = await _httpManager.restRequest(
@@ -33,6 +34,31 @@ class CartRepository {
       // retornar uma mensagem
       return CartResult.error(
           'Ocorreu um êrro ao recuperar os itens do carrinho');
+    }
+  }
+
+  // Método de adição de itens no carrinho
+  Future<CartResult<String>> addItemToCart(
+      {required String userId,
+      required String token,
+      required String productId,
+      required int quantity}) async {
+    final result = await _httpManager.restRequest(
+      urlll: EndPoints.addItemToCart,
+      methoddd: HttpMethods.posttt,
+      bodyyy: {
+        "user": userId,
+        "quantity": quantity,
+        "productId": productId,
+      },
+      headersss: {'X-Parse-Session-Token': token},
+    );
+    if (result['result'] != null) {
+      // É diferente de nulo, adicionamos
+      return CartResult<String>.success(result['result']['id']);
+    } else {
+      // Êrro
+      return CartResult.error('Não foi possível adicionar o item no carrinho');
     }
   }
 }
