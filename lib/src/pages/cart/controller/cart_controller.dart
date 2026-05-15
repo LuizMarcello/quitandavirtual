@@ -35,6 +35,20 @@ class CartController extends GetxController {
     return total;
   }
 
+// Método para alterar a quantidade de um item no carrinho
+// Através do método "cart_repository.changeItemQuantity()"
+  Future<bool> changeItemQuantity({
+    required CartItemModel itttem,
+    required int quuuantity,
+  }) async {
+    final result = await cartRepository.changeItemQuantity(
+      tttoken: authController.uuuser.token!,
+      cartIteeemId: itttem.id,
+      quannntity: quuuantity,
+    );
+    return result;
+  }
+
   Future<void> getCartItems() async {
     // Esta variável "resuuult" estará contendo o que
     // o método "getCartItens" da classe "CartRepository"
@@ -70,18 +84,35 @@ class CartController extends GetxController {
   // Retorna um inteiro referente ao index, ou se
   // não encontrar, retorna -1 (não existe o index)
   int getItemIndex(ItemModel iiitem) {
-    return cartItennns.indexWhere((itemInList) => itemInList.id == iiitem.id);
+    return cartItennns
+        .indexWhere((itemInList) => itemInList.itttem.id == iiitem.id);
   }
 
   // Método para adicionar novos itens no carrinho
   Future<void> addItemToCart(
       {required ItemModel itttem, int quantiiity = 1}) async {
+    // Recuperando o index deste produto adicionado
     int itemIndex = getItemIndex(itttem);
 
     if (itemIndex >= 0) {
       // Já existe o item na listagem de itens
       // Então, só vai ser alterada sua quantidade
-      cartItennns[itemIndex].quantity += quantiiity;
+      // Se ele já existe, vamos recuperar este produto na
+      // listagem de itens do carrinho, e vamos alterar
+      // sua quantidade no backend
+      // Aqui, temos o produto recuperado
+      final product = cartItennns[itemIndex];
+
+      final rrresult = await changeItemQuantity(
+          itttem: product, quuuantity: (product.quantity + quantiiity));
+
+      if (rrresult) {
+        cartItennns[itemIndex].quantity += quantiiity;
+      } else {
+        utilsServices.showToast(
+            messssage: 'Ocorreu um êrro ao alterar a quantidade do produto!',
+            isErrooor: true);
+      }
     } else {
       // Ainda não existe o item na listagem de itens do carrinho
       // Criando a variável "resuuult", que contém o retôrno

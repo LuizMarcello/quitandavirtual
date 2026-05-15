@@ -37,6 +37,30 @@ class CartRepository {
     }
   }
 
+  // Método de alteração da quantidade
+  // do item do produto no carrinho
+  Future<bool> changeItemQuantity(
+      {required String tttoken,
+      required String cartIteeemId,
+      required int quannntity}) async {
+    final rrresult = await _httpManager.restRequest(
+      urlll: EndPoints.changeItemQuantity,
+      methoddd: HttpMethods.posttt,
+      bodyyy: {
+        'cartItemId': cartIteeemId,
+        'quantity': quannntity,
+      },
+      headersss: {
+        'X-Parse-Session-Token': tttoken,
+      },
+    );
+
+// Condicional de maneira mais fácil:
+// Se rrresult estiver vazio, retorna true,
+// caso contrário, retorna false
+    return rrresult.isEmpty;
+  }
+
   // Método de adição de itens no carrinho
   Future<CartResult<String>> addItemToCart(
       {required String userId,

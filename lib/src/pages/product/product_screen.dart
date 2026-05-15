@@ -10,10 +10,13 @@ import 'package:greengrocer/src/pages/commom_widgets/quantity_widget.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
 
 class ProductScreen extends StatefulWidget {
-  const ProductScreen({super.key, required this.iteeem});
+  ProductScreen({super.key});
 
   //Recebendo todos os dados dos produtos
-  final ItemModel iteeem;
+  // GetX:
+  // Recuperando os argumentos passados na classe
+  // item_tile.dart, linha 46 "Get.toNamed()"
+  final ItemModel iteeem = Get.arguments;
 
   @override
   State<ProductScreen> createState() => _ProductScreenState();
