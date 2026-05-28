@@ -15,7 +15,8 @@ class CartController extends GetxController {
   final authController = Get.find<AuthController>();
   final utilsServices = UtilsServices();
 
-// Esta lista "cartItennns", são os itens do carrinho
+// Esta lista "cartItennns", é a listagem do frontend
+//  dos itens que estão no carrinho, no backend
   List<CartItemModel> cartItennns = [];
 
   @override
@@ -28,7 +29,8 @@ class CartController extends GetxController {
 
   double cartTotalPrice() {
     double total = 0;
-    // Recuperando cada item da listagem dos itens do carrinho
+    // Recuperando cada item da listagem do front,
+    // dos itens do carrinho
     for (final item in cartItennns) {
       total += item.totalPrice();
     }
@@ -46,6 +48,34 @@ class CartController extends GetxController {
       cartIteeemId: itttem.id,
       quannntity: quuuantity,
     );
+
+// Se "cart_repository.changeItemQuantity()"
+// retornou true, quer dizer que o backend recebeu
+// esta requisição, modificou a quantidade e podemos
+// prosseguir
+    if (result) {
+      // Mas se zerou o produto, ele foi removido do carrinho
+      // Então precisamos removê-lo aqui do frontend
+      if (quuuantity == 0) {
+        // Removendo então este produto aqui da listagem do front,
+        // dos itens da listagem do carrinho no back
+        cartItennns.removeWhere((cartItem) => cartItem.id == itttem.id);
+        // Se não zerou no carrinho no backend
+      } else {
+        // Então, a listagem, aqui no front, vai receber a nova
+        // quantidade deste item(quuuantity), para atualizar
+        cartItennns
+            .firstWhere((cartItem) => cartItem.id == itttem.id)
+            .quantity = quuuantity;
+      }
+      update();
+    } else {
+      utilsServices.showToast(
+        messssage: 'Ocorreu um êrro ao alterar a quantidade do produto',
+        isErrooor: true,
+      );
+    }
+
     return result;
   }
 
@@ -103,16 +133,8 @@ class CartController extends GetxController {
       // Aqui, temos o produto recuperado
       final product = cartItennns[itemIndex];
 
-      final rrresult = await changeItemQuantity(
+      await changeItemQuantity(
           itttem: product, quuuantity: (product.quantity + quantiiity));
-
-      if (rrresult) {
-        cartItennns[itemIndex].quantity += quantiiity;
-      } else {
-        utilsServices.showToast(
-            messssage: 'Ocorreu um êrro ao alterar a quantidade do produto!',
-            isErrooor: true);
-      }
     } else {
       // Ainda não existe o item na listagem de itens do carrinho
       // Criando a variável "resuuult", que contém o retôrno
